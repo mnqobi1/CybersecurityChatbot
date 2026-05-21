@@ -1,0 +1,84 @@
+﻿<Window x:Class="CybersecurityChatbot.Views.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:conv="clr-namespace:CybersecurityChatbot.Converters"
+        Title="Cybersecurity Assistant" Height="600" Width="900"
+        WindowStartupLocation="CenterScreen"
+        Background="#1E1E2E">
+
+    <Window.Resources>
+        <Style x:Key="PromptButton" TargetType="Button">
+            <Setter Property="Background" Value="#3D3D4D"/>
+            <Setter Property="Foreground" Value="White"/>
+            <Setter Property="Margin" Value="0,5"/>
+            <Setter Property="Padding" Value="10,5"/>
+            <Setter Property="Cursor" Value="Hand"/>
+            <Setter Property="HorizontalAlignment" Value="Stretch"/>
+            <Style.Triggers>
+                <Trigger Property="IsMouseOver" Value="True">
+                    <Setter Property="Background" Value="#4C9AFF"/>
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+        <conv:SenderColorConverter x:Key="SenderColorConverter"/>
+    </Window.Resources>
+    <Grid Margin="15">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="200"/>
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
+
+        <!-- Left panel: prompts -->
+        <Border Grid.Column="0" Background="#2D2D3D" CornerRadius="8" Margin="0,0,10,0">
+            <StackPanel Margin="10">
+                <TextBlock Text="💡 Suggested Questions" FontWeight="Bold" FontSize="14" Foreground="#4C9AFF" Margin="0,0,0,10"/>
+                <Button Content="What is phishing?" Click="PromptButton_Click" Tag="What is phishing?" Background="#3D3D4D" Foreground="White" Margin="0,5" Padding="10,5"/>
+                <Button Content="How to create a strong password?" Click="PromptButton_Click" Tag="How to create a strong password?" Background="#3D3D4D" Foreground="White" Margin="0,5" Padding="10,5"/>
+                <Button Content="What is a scam?" Click="PromptButton_Click" Tag="What is a scam?" Background="#3D3D4D" Foreground="White" Margin="0,5" Padding="10,5"/>
+                <Button Content="Explain 2FA" Click="PromptButton_Click" Tag="Explain 2FA" Background="#3D3D4D" Foreground="White" Margin="0,5" Padding="10,5"/>
+                <Button Content="What does VPN do?" Click="PromptButton_Click" Tag="What does VPN do?" Background="#3D3D4D" Foreground="White" Margin="0,5" Padding="10,5"/>
+                <Button Content="How to avoid ransomware?" Click="PromptButton_Click" Tag="How to avoid ransomware?" Background="#3D3D4D" Foreground="White" Margin="0,5" Padding="10,5"/>
+                <Button Content="Privacy tips" Click="PromptButton_Click" Tag="Privacy tips" Background="#3D3D4D" Foreground="White" Margin="0,5" Padding="10,5"/>
+                <Button Content="Safe browsing habits" Click="PromptButton_Click" Tag="Safe browsing habits" Background="#3D3D4D" Foreground="White" Margin="0,5" Padding="10,5"/>
+                <Button Content="What is malware?" Click="PromptButton_Click" Tag="What is malware?" Background="#3D3D4D" Foreground="White" Margin="0,5" Padding="10,5"/>
+                <Button Content="Stats" Click="PromptButton_Click" Tag="stats" Background="#3D3D4D" Foreground="White" Margin="0,5" Padding="10,5"/>
+                <Button Content="History" Click="PromptButton_Click" Tag="history" Background="#3D3D4D" Foreground="White" Margin="0,5" Padding="10,5"/>
+                <Button Content="Help" Click="PromptButton_Click" Tag="help" Background="#3D3D4D" Foreground="White" Margin="0,5" Padding="10,5"/>
+            </StackPanel>
+        </Border>
+
+        <!-- Right panel: chat area -->
+        <Grid Grid.Column="1">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+            </Grid.RowDefinitions>
+
+            <TextBlock Grid.Row="0" FontFamily="Consolas" FontSize="10" Foreground="#4C9AFF" TextWrapping="Wrap"
+                       Text="CYBERSECURITY SEC&#x0a;Protecting South African Citizens Online"/>
+
+            <ListBox x:Name="ChatHistoryListBox" Grid.Row="1" Margin="0,10" Background="#2D2D3D"
+                     ItemsSource="{Binding Messages}" ScrollViewer.HorizontalScrollBarVisibility="Disabled">
+                <ListBox.ItemTemplate>
+                    <DataTemplate>
+                        <TextBlock Text="{Binding Text}" Margin="5"
+                                   Foreground="{Binding Sender, Converter={StaticResource SenderColorConverter}}"
+                                   TextWrapping="Wrap"/>
+                    </DataTemplate>
+                </ListBox.ItemTemplate>
+            </ListBox>
+
+            <StackPanel Grid.Row="2" Orientation="Horizontal" Margin="0,5">
+                <TextBox x:Name="UserInputTextBox" Text="{Binding UserInput, UpdateSourceTrigger=PropertyChanged}"
+                         KeyDown="UserInputTextBox_KeyDown" Width="450" Height="35" Margin="0,0,10,0"
+                         FontSize="14" Background="#3D3D4D" Foreground="White" BorderBrush="#888"/>
+                <Button Content="Send" Command="{Binding SendCommand}" Width="80" Height="35"
+                        Background="#4C9AFF" Foreground="White" FontWeight="Bold"/>
+            </StackPanel>
+
+            <TextBlock Grid.Row="3" Text="{Binding StatusMessage}" Foreground="#CCCCCC" Margin="0,10,0,0"/>
+        </Grid>
+    </Grid>
+</Window>
